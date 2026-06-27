@@ -68,10 +68,16 @@ export async function setUserPassword(password: string): Promise<void> {
 export async function checkPassword(password: string): Promise<boolean> {
   const s = await getSettings();
 
+  // Once an operator override exists — WEBOBSIDIAN_PASSWORD (env) or a manually-set
+  // auth.passwordHash — authentication has been deliberately configured, so the
+  // well-known default (123456) is no longer accepted. This stops it lingering as a
+  // parallel valid password on an instance whose owner has already set a password.
+  const hasOverride = Boolean(config.initialPassword) || Boolean(s.auth.passwordHash);
+
   // (1) Mật khẩu đăng nhập hiệu dụng.
   if (s.auth.userPasswordHash) {
     if (await verifyPassword(password, s.auth.userPasswordHash)) return true;
-  } else if (safeEqualStr(password, DEFAULT_PASSWORD)) {
+  } else if (!hasOverride && safeEqualStr(password, DEFAULT_PASSWORD)) {
     return true;
   }
 
