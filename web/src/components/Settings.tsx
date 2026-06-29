@@ -398,8 +398,16 @@ function Appearance({ s }: { s: any }) {
       <h2>Appearance</h2>
       <Row name="Theme">
         <select className="text-input" value={theme} onChange={(e) => save(e.target.value)}>
-          <option value="obsidian-dark">Obsidian Dark</option>
-          <option value="obsidian-light">Obsidian Light</option>
+          <optgroup label="Obsidian">
+            <option value="obsidian-dark">Obsidian Dark</option>
+            <option value="obsidian-light">Obsidian Light</option>
+          </optgroup>
+          <optgroup label="Catppuccin">
+            <option value="catppuccin-mocha">Catppuccin Mocha</option>
+            <option value="catppuccin-macchiato">Catppuccin Macchiato</option>
+            <option value="catppuccin-frappe">Catppuccin Frappé</option>
+            <option value="catppuccin-latte">Catppuccin Latte</option>
+          </optgroup>
         </select>
       </Row>
     </div>
