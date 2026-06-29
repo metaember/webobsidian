@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { isDarkTheme } from '../lib/theme';
 import { highlightCode, classHighlighter } from '@lezer/highlight';
 import { LanguageDescription } from '@codemirror/language';
 import { languages } from '@codemirror/language-data';
@@ -49,7 +50,7 @@ const loadMermaid = () =>
   (mermaidP ??= import('mermaid').then((m) => {
     m.default.initialize({
       startOnLoad: false,
-      theme: document.querySelector('.theme-dark') ? 'dark' : 'default',
+      theme: isDarkTheme() ? 'dark' : 'default',
     });
     return m.default;
   }));

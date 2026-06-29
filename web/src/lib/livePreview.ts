@@ -8,6 +8,7 @@ import {
 } from '@codemirror/view';
 import { StateField, StateEffect, type EditorState, type Range, type Text } from '@codemirror/state';
 import { syntaxTree } from '@codemirror/language';
+import { themeHost, isDarkTheme } from './theme';
 import { CALLOUT_SLOT, CALLOUT_RE, calloutDefaultTitle, calloutIconSvg } from './callouts';
 import { openLightbox } from './imageLightbox';
 import { VIDEO_EXT_RE, AUDIO_EXT_RE } from './media';
@@ -516,7 +517,7 @@ function ensureMermaid() {
     mermaidPromise = import('mermaid').then((m) => {
       m.default.initialize({
         startOnLoad: false,
-        theme: document.querySelector('.theme-dark') ? 'dark' : 'default',
+        theme: isDarkTheme() ? 'dark' : 'default',
       });
       return m.default;
     });
@@ -1607,7 +1608,7 @@ class FrontmatterWidget extends WidgetType {
       container.insertBefore(inp, addBtn);
       // Mount inside the theme wrapper (not <body>) so the CSS variables that give
       // the dropdown its background resolve — otherwise it renders transparent.
-      const host = (document.querySelector('.theme-light, .theme-dark') as HTMLElement) ?? document.body;
+      const host = themeHost();
       host.appendChild(dd);
       // Fixed-position just below the input (viewport coords; rect forces reflow).
       const ir = inp.getBoundingClientRect();

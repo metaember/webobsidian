@@ -154,10 +154,10 @@ export default function App() {
     };
   }, [isMobile, setMobileDrawer]);
 
-  if (checking) return <div className={theme} style={{ height: '100%' }} />;
-  if (!authed) return <div className={theme}><Login onAuthed={() => setAuthed(true)} /></div>;
+  if (checking) return <div className={`theme-host ${theme}`} style={{ height: '100%' }} />;
+  if (!authed) return <div className={`theme-host ${theme}`}><Login onAuthed={() => setAuthed(true)} /></div>;
   // Signed in but still on the default password → block the app until it's changed.
-  if (mustChangePassword) return <div className={theme}><ForceChangePassword /></div>;
+  if (mustChangePassword) return <div className={`theme-host ${theme}`}><ForceChangePassword /></div>;
 
   // On mobile the sidebars are overlay drawers (always mounted, slid in/out by
   // CSS), driven by the device-local `mobileDrawer` state — not the persisted
@@ -174,7 +174,7 @@ export default function App() {
   ].filter(Boolean).join(' ');
 
   return (
-    <div className={theme}>
+    <div className={`theme-host ${theme}`}>
       <div className={appCls}>
         <Ribbon onTheme={() => setTheme(theme === 'theme-dark' ? 'theme-light' : 'theme-dark')} />
         {showLeft && <Sidebar />}

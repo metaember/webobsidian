@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { themeHost } from '../lib/theme';
 import { useStore, type GraphSettings } from '../lib/store';
 import { api } from '../lib/api';
 import Icon from './Icon';
@@ -175,7 +176,7 @@ export default function GraphView() {
   // ---- colour helpers -----------------------------------------------------
   const getCols = (): ColorSet => {
     const Color = mod.current!.Color;
-    const cs = getComputedStyle(document.querySelector('.theme-light, .theme-dark') || document.body);
+    const cs = getComputedStyle(themeHost());
     const toInt = (name: string, fb: number) => {
       const v = cs.getPropertyValue(name).trim();
       if (!v) return fb;

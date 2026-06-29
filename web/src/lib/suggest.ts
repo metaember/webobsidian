@@ -1,4 +1,5 @@
 import { EditorView, ViewPlugin, ViewUpdate, keymap } from '@codemirror/view';
+import { themeHost } from './theme';
 import { Prec } from '@codemirror/state';
 import { prepareQuery, fuzzySearch, fuzzySearchPath, type FuzzyMatch } from './fuzzy';
 
@@ -142,7 +143,7 @@ class SuggestState {
     if (!this.dom) {
       this.dom = document.createElement('div');
       this.dom.className = 'suggestion-container';
-      const host = (document.querySelector('.theme-light, .theme-dark') as HTMLElement) ?? document.body;
+      const host = themeHost();
       host.appendChild(this.dom);
     }
     const dom = this.dom;
