@@ -60,24 +60,39 @@ export async function setUserPassword(password: string): Promise<void> {
 }
 
 /**
+ * True when an operator override password is configured — WEBOBSIDIAN_PASSWORD
+ * (env) or a manually-set auth.passwordHash. The login route uses this to refuse
+ * the well-known default (123456) once auth has been deliberately set up.
+ */
+export async function hasOverridePassword(): Promise<boolean> {
+  const s = await getSettings();
+  return Boolean(config.initialPassword) || Boolean(s.auth.passwordHash);
+}
+
+/**
  * Kiểm tra mật khẩu đăng nhập. Chấp nhận:
- *  1) Mật khẩu người dùng (userPasswordHash), hoặc mặc định 123456 nếu chưa đổi.
+ *  1) Mật khẩu người dùng (userPasswordHash), hoặc mặc định 123456 nếu chưa đổi
+ *     (chỉ khi `allowDefault`).
  *  2) Mật khẩu override để khôi phục: auth.passwordHash (hash, sửa tay) hoặc
  *     env WEBOBSIDIAN_PASSWORD (plaintext) — luôn được chấp nhận.
+ *
+ * `allowDefault` gates the well-known fallback (123456). The login route passes
+ * false once an override exists, so an internet-exposed instance can't be logged
+ * into with the default. It stays true for change-password's current-password
+ * check, so the first-run "set a password" flow still works under an override —
+ * that path is already behind requireAuth, so accepting 123456 there is safe.
  */
-export async function checkPassword(password: string): Promise<boolean> {
+export async function checkPassword(
+  password: string,
+  opts: { allowDefault?: boolean } = {},
+): Promise<boolean> {
+  const { allowDefault = true } = opts;
   const s = await getSettings();
-
-  // Once an operator override exists — WEBOBSIDIAN_PASSWORD (env) or a manually-set
-  // auth.passwordHash — authentication has been deliberately configured, so the
-  // well-known default (123456) is no longer accepted. This stops it lingering as a
-  // parallel valid password on an instance whose owner has already set a password.
-  const hasOverride = Boolean(config.initialPassword) || Boolean(s.auth.passwordHash);
 
   // (1) Mật khẩu đăng nhập hiệu dụng.
   if (s.auth.userPasswordHash) {
     if (await verifyPassword(password, s.auth.userPasswordHash)) return true;
-  } else if (!hasOverride && safeEqualStr(password, DEFAULT_PASSWORD)) {
+  } else if (allowDefault && safeEqualStr(password, DEFAULT_PASSWORD)) {
     return true;
   }
 

@@ -12,7 +12,7 @@ vi.mock('./settings.js', () => ({
   updateSettings: vi.fn(),
 }));
 
-const { checkPassword } = await import('./auth.js');
+const { checkPassword, hasOverridePassword, changePassword } = await import('./auth.js');
 
 beforeEach(() => {
   cfg.initialPassword = undefined;
@@ -20,27 +20,46 @@ beforeEach(() => {
   settings.auth.passwordHash = '';
 });
 
-describe('checkPassword — default (123456) is disabled once an override password exists', () => {
-  it('accepts the default with zero config (no override, no user password)', async () => {
+describe('hasOverridePassword', () => {
+  it('is false with no override configured', async () => {
+    expect(await hasOverridePassword()).toBe(false);
+  });
+  it('is true when WEBOBSIDIAN_PASSWORD (config.initialPassword) is set', async () => {
+    cfg.initialPassword = 'recovery';
+    expect(await hasOverridePassword()).toBe(true);
+  });
+  it('is true when a manual auth.passwordHash is set', async () => {
+    settings.auth.passwordHash = 'scrypt$00$00';
+    expect(await hasOverridePassword()).toBe(true);
+  });
+});
+
+describe('checkPassword — default (123456) gating via allowDefault', () => {
+  it('accepts the default with zero config (lenient by default)', async () => {
     expect(await checkPassword('123456')).toBe(true);
   });
-
-  it('REJECTS the default once the WEBOBSIDIAN_PASSWORD override is set', async () => {
-    cfg.initialPassword = 'super-secret';
-    expect(await checkPassword('123456')).toBe(false);
+  it('rejects the default at login when an override exists (allowDefault: false)', async () => {
+    cfg.initialPassword = 'recovery';
+    expect(await checkPassword('123456', { allowDefault: false })).toBe(false);
   });
-
-  it('still accepts the override password itself', async () => {
-    cfg.initialPassword = 'super-secret';
-    expect(await checkPassword('super-secret')).toBe(true);
+  it('still accepts the override password itself (recovery login)', async () => {
+    cfg.initialPassword = 'recovery';
+    expect(await checkPassword('recovery', { allowDefault: false })).toBe(true);
   });
-
-  it('REJECTS the default when a manual override hash (auth.passwordHash) exists', async () => {
-    settings.auth.passwordHash = 'scrypt$00$00'; // truthy override; won't match 123456
-    expect(await checkPassword('123456')).toBe(false);
-  });
-
-  it('rejects an unrelated wrong password regardless', async () => {
+  it('rejects an unrelated wrong password', async () => {
     expect(await checkPassword('hunter2')).toBe(false);
+  });
+});
+
+describe('first-run password setup is not blocked by an override (regression for the #4 dead-end)', () => {
+  it('login rejects 123456 under an override, but change-password still sets the real password', async () => {
+    cfg.initialPassword = 'recovery'; // override active
+
+    // Login path is hardened: the default is refused.
+    expect(await checkPassword('123456', { allowDefault: false })).toBe(false);
+
+    // But the authenticated first-run "set a password" flow (which submits 123456
+    // as the current password) must still succeed and write the real hash.
+    await expect(changePassword('123456', 'my-real-password')).resolves.toBeUndefined();
   });
 });
