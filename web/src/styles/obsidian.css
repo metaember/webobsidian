@@ -235,14 +235,11 @@
   --color-accent-1: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
   --color-accent-2: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) * 0.9));
 
-  --color-red: #fb464c;     --color-red-rgb: 251, 70, 76;
-  --color-orange: #e9973f;  --color-orange-rgb: 233, 151, 63;
-  --color-yellow: #e0de71;  --color-yellow-rgb: 224, 222, 113;
-  --color-green: #44cf6e;   --color-green-rgb: 68, 207, 110;
-  --color-cyan: #53dfdd;    --color-cyan-rgb: 83, 223, 221;
-  --color-blue: #027aff;    --color-blue-rgb: 2, 122, 255;
-  --color-purple: #a882ff;  --color-purple-rgb: 168, 130, 255;
-  --color-pink: #fa99cd;    --color-pink-rgb: 250, 153, 205;
+  /* The named accent colors (red/orange/…/pink) are authentic per-flavor
+     Catppuccin pastels, set in each flavor block below — NOT here — so syntax
+     highlighting, tags, callouts and the colored graph nodes match the official
+     palette instead of Obsidian's default punchy set. Obsidian's slot → Catppuccin
+     mapping: orange=peach, cyan=teal, purple=mauve (the rest are 1:1). */
 
   --callout-default: var(--color-blue-rgb);  --callout-summary: var(--color-cyan-rgb);
   --callout-info: var(--color-blue-rgb);     --callout-todo: var(--color-blue-rgb);
@@ -267,8 +264,8 @@
   --text-normal: var(--color-base-100);              /* text */
   --text-muted: var(--color-base-70);                /* subtext0 */
   --text-faint: var(--color-base-50);                /* overlay1 */
-  --text-accent: var(--color-accent-1);
-  --text-accent-hover: var(--color-accent-2);
+  --text-accent: var(--color-blue);            /* Catppuccin links/URLs are blue, not the lavender accent */
+  --text-accent-hover: var(--color-accent-1);  /* lavender on hover */
   --text-on-accent: var(--color-base-00);
   --text-selection: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.33);
   --text-highlight-bg: rgba(255, 208, 0, 0.4);
@@ -311,6 +308,14 @@
   --color-base-35:#585b70; --color-base-40:#6c7086; --color-base-50:#7f849c;
   --color-base-60:#9399b2; --color-base-70:#a6adc8; --color-base-100:#cdd6f4;
   --accent-h:232; --accent-s:97%; --accent-l:85%;
+  --color-red:#f38ba8;    --color-red-rgb:243,139,168;
+  --color-orange:#fab387; --color-orange-rgb:250,179,135;  /* peach */
+  --color-yellow:#f9e2af; --color-yellow-rgb:249,226,175;
+  --color-green:#a6e3a1;  --color-green-rgb:166,227,161;
+  --color-cyan:#94e2d5;   --color-cyan-rgb:148,226,213;    /* teal */
+  --color-blue:#89b4fa;   --color-blue-rgb:137,180,250;
+  --color-purple:#cba6f7; --color-purple-rgb:203,166,247;  /* mauve */
+  --color-pink:#f5c2e7;   --color-pink-rgb:245,194,231;
   --mono-rgb-0:0,0,0; --mono-rgb-100:255,255,255;
   --highlight-mix-blend-mode:lighten; color-scheme:dark;
 }
@@ -320,6 +325,14 @@
   --color-base-35:#5b6078; --color-base-40:#6e738d; --color-base-50:#8087a2;
   --color-base-60:#939ab7; --color-base-70:#a5adcb; --color-base-100:#cad3f5;
   --accent-h:234; --accent-s:82%; --accent-l:85%;
+  --color-red:#ed8796;    --color-red-rgb:237,135,150;
+  --color-orange:#f5a97f; --color-orange-rgb:245,169,127;  /* peach */
+  --color-yellow:#eed49f; --color-yellow-rgb:238,212,159;
+  --color-green:#a6da95;  --color-green-rgb:166,218,149;
+  --color-cyan:#8bd5ca;   --color-cyan-rgb:139,213,202;    /* teal */
+  --color-blue:#8aadf4;   --color-blue-rgb:138,173,244;
+  --color-purple:#c6a0f6; --color-purple-rgb:198,160,246;  /* mauve */
+  --color-pink:#f5bde6;   --color-pink-rgb:245,189,230;
   --mono-rgb-0:0,0,0; --mono-rgb-100:255,255,255;
   --highlight-mix-blend-mode:lighten; color-scheme:dark;
 }
@@ -329,6 +342,14 @@
   --color-base-35:#626880; --color-base-40:#737994; --color-base-50:#838ba7;
   --color-base-60:#949cbb; --color-base-70:#a5adce; --color-base-100:#c6d0f5;
   --accent-h:239; --accent-s:66%; --accent-l:84%;
+  --color-red:#e78284;    --color-red-rgb:231,130,132;
+  --color-orange:#ef9f76; --color-orange-rgb:239,159,118;  /* peach */
+  --color-yellow:#e5c890; --color-yellow-rgb:229,200,144;
+  --color-green:#a6d189;  --color-green-rgb:166,209,137;
+  --color-cyan:#81c8be;   --color-cyan-rgb:129,200,190;    /* teal */
+  --color-blue:#8caaee;   --color-blue-rgb:140,170,238;
+  --color-purple:#ca9ee6; --color-purple-rgb:202,158,230;  /* mauve */
+  --color-pink:#f4b8e4;   --color-pink-rgb:244,184,228;
   --mono-rgb-0:0,0,0; --mono-rgb-100:255,255,255;
   --highlight-mix-blend-mode:lighten; color-scheme:dark;
 }
@@ -338,6 +359,14 @@
   --color-base-35:#acb0be; --color-base-40:#9ca0b0; --color-base-50:#8c8fa1;
   --color-base-60:#7c7f93; --color-base-70:#6c6f85; --color-base-100:#4c4f69;
   --accent-h:231; --accent-s:97%; --accent-l:72%;
+  --color-red:#d20f39;    --color-red-rgb:210,15,57;
+  --color-orange:#fe640b; --color-orange-rgb:254,100,11;   /* peach */
+  --color-yellow:#df8e1d; --color-yellow-rgb:223,142,29;
+  --color-green:#40a02b;  --color-green-rgb:64,160,43;
+  --color-cyan:#179299;   --color-cyan-rgb:23,146,153;     /* teal */
+  --color-blue:#1e66f5;   --color-blue-rgb:30,102,245;
+  --color-purple:#8839ef; --color-purple-rgb:136,57,239;   /* mauve */
+  --color-pink:#ea76cb;   --color-pink-rgb:234,118,203;
   --mono-rgb-0:255,255,255; --mono-rgb-100:0,0,0;
   --highlight-mix-blend-mode:darken; color-scheme:light;
 }

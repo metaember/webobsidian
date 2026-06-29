@@ -192,9 +192,9 @@ export default function GraphView() {
       edge: toInt('--text-faint', 0x999999),
       text: toInt('--text-muted', 0x666666),
       textStrong: toInt('--text-normal', 0x222222),
-      attach: 0xe0a008,
+      attach: toInt('--color-yellow', 0xe0a008),
       unresolved: toInt('--text-faint', 0xaaaaaa),
-      tag: 0x3aa757, // Obsidian-like green for tag nodes
+      tag: toInt('--color-green', 0x3aa757), // green for tag nodes (flavor palette)
       bg: toInt('--bg-primary', 0xffffff),
     };
   };
