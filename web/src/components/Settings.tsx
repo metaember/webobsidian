@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStore } from '../lib/store';
 import { api } from '../lib/api';
+import { themeClass } from '../lib/theme';
 import Icon from './Icon';
 
 type Section = 'vault' | 'git' | 'api' | 'sharing' | 'plugins' | 'appearance' | 'account' | 'about';
@@ -392,7 +393,12 @@ function Plugins() {
 
 function Appearance({ s }: { s: any }) {
   const [theme, setTheme] = useState(s.ui.theme);
-  const save = async (t: string) => { setTheme(t); await api.putSettings({ ui: { theme: t } }); location.reload(); };
+  // Apply the theme live (no reload — keeps the Settings dialog open), then persist.
+  const save = async (t: string) => {
+    setTheme(t);
+    useStore.getState().setTheme(themeClass(t));
+    await api.putSettings({ ui: { theme: t } });
+  };
   return (
     <div>
       <h2>Appearance</h2>

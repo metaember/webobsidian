@@ -231,8 +231,9 @@
    the semantic mapping (text/background/interactive → the ramp) is shared here so
    it mirrors .theme-dark/.theme-light without being duplicated four times. */
 .theme-ctp-mocha, .theme-ctp-macchiato, .theme-ctp-frappe, .theme-ctp-latte {
-  --color-accent-1: hsl(calc(var(--accent-h) - 3), calc(var(--accent-s) * 1.02), calc(var(--accent-l) * 1.10));
-  --color-accent-2: hsl(calc(var(--accent-h) - 5), calc(var(--accent-s) * 1.05), calc(var(--accent-l) * 1.20));
+  --color-accent: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --color-accent-1: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
+  --color-accent-2: hsl(var(--accent-h), var(--accent-s), calc(var(--accent-l) * 0.9));
 
   --color-red: #fb464c;     --color-red-rgb: 251, 70, 76;
   --color-orange: #e9973f;  --color-orange-rgb: 233, 151, 63;
@@ -251,25 +252,28 @@
   --callout-error: var(--color-red-rgb);     --callout-bug: var(--color-red-rgb);
   --callout-example: var(--color-purple-rgb);--callout-quote: 158, 158, 158;
 
-  --background-primary: var(--color-base-00);
-  --background-primary-alt: var(--color-base-10);
-  --background-secondary: var(--color-base-20);
-  --background-secondary-alt: var(--color-base-30);
-  --background-modifier-border: var(--color-base-30);
-  --background-modifier-border-hover: var(--color-base-35);
-  --background-modifier-border-focus: var(--color-base-40);
+  /* base steps follow the official catppuccin/obsidian mapping:
+     00 crust · 10 mantle · 20 base · 25 surface0 · 30 surface1 · 35 surface2
+     40 overlay0 · 50 overlay1 · 60 overlay2 · 70 subtext0 · 100 text */
+  --background-primary: var(--color-base-20);        /* base */
+  --background-primary-alt: var(--color-base-25);    /* surface0 */
+  --background-secondary: var(--color-base-10);      /* mantle (sidebar, darker) */
+  --background-secondary-alt: var(--color-base-00);  /* crust */
+  --background-modifier-border: var(--color-base-25);
+  --background-modifier-border-hover: var(--color-base-30);
+  --background-modifier-border-focus: var(--color-base-35);
   --background-modifier-hover: rgba(var(--mono-rgb-100), 0.067);
   --background-modifier-form-field: var(--color-base-25);
-  --text-normal: var(--color-base-100);
-  --text-muted: var(--color-base-70);
-  --text-faint: var(--color-base-50);
+  --text-normal: var(--color-base-100);              /* text */
+  --text-muted: var(--color-base-70);                /* subtext0 */
+  --text-faint: var(--color-base-50);                /* overlay1 */
   --text-accent: var(--color-accent-1);
   --text-accent-hover: var(--color-accent-2);
   --text-on-accent: var(--color-base-00);
   --text-selection: hsla(var(--accent-h), var(--accent-s), var(--accent-l), 0.33);
   --text-highlight-bg: rgba(255, 208, 0, 0.4);
-  --interactive-normal: var(--color-base-30);
-  --interactive-hover: var(--color-base-35);
+  --interactive-normal: var(--color-base-25);
+  --interactive-hover: var(--color-base-30);
   --interactive-accent: var(--color-accent);
   --interactive-accent-hover: var(--color-accent-1);
 
@@ -301,50 +305,48 @@
   background-color: var(--background-primary);
 }
 
-.theme-ctp-mocha {
-  --color-base-00:#1e1e2e; --color-base-05:#24273a; --color-base-10:#292c3c;
-  --color-base-20:#313244; --color-base-25:#363a4f; --color-base-30:#45475a;
-  --color-base-35:#4f5169; --color-base-40:#585b70; --color-base-50:#6c7086;
-  --color-base-60:#838ba7; --color-base-70:#a6adc8; --color-base-100:#cdd6f4;
-  --accent-h:267; --accent-s:84%; --accent-l:74%;
+.theme-ctp-mocha {  /* base #1e1e2e · accent lavender #b4befe */
+  --color-base-00:#11111b; --color-base-05:#14141f; --color-base-10:#181825;
+  --color-base-20:#1e1e2e; --color-base-25:#313244; --color-base-30:#45475a;
+  --color-base-35:#585b70; --color-base-40:#6c7086; --color-base-50:#7f849c;
+  --color-base-60:#9399b2; --color-base-70:#a6adc8; --color-base-100:#cdd6f4;
+  --accent-h:232; --accent-s:97%; --accent-l:85%;
   --mono-rgb-0:0,0,0; --mono-rgb-100:255,255,255;
   --highlight-mix-blend-mode:lighten; color-scheme:dark;
 }
-.theme-ctp-macchiato {
-  --color-base-00:#24273a; --color-base-05:#2a2d40; --color-base-10:#303347;
-  --color-base-20:#363a4f; --color-base-25:#3f435a; --color-base-30:#494d64;
-  --color-base-35:#535870; --color-base-40:#5b6078; --color-base-50:#6e738c;
-  --color-base-60:#8087a2; --color-base-70:#a5adcb; --color-base-100:#cad3f5;
-  --accent-h:267; --accent-s:73%; --accent-l:73%;
+.theme-ctp-macchiato {  /* base #24273a · accent lavender #b7bdf8 */
+  --color-base-00:#181926; --color-base-05:#1b1d2b; --color-base-10:#1e2030;
+  --color-base-20:#24273a; --color-base-25:#363a4f; --color-base-30:#494d64;
+  --color-base-35:#5b6078; --color-base-40:#6e738d; --color-base-50:#8087a2;
+  --color-base-60:#939ab7; --color-base-70:#a5adcb; --color-base-100:#cad3f5;
+  --accent-h:234; --accent-s:82%; --accent-l:85%;
   --mono-rgb-0:0,0,0; --mono-rgb-100:255,255,255;
   --highlight-mix-blend-mode:lighten; color-scheme:dark;
 }
-.theme-ctp-frappe {
-  --color-base-00:#303446; --color-base-05:#363a4c; --color-base-10:#3c4052;
-  --color-base-20:#414559; --color-base-25:#4a4e63; --color-base-30:#51576d;
-  --color-base-35:#5b6078; --color-base-40:#626880; --color-base-50:#737994;
-  --color-base-60:#838ba7; --color-base-70:#a5adce; --color-base-100:#c6d0f5;
-  --accent-h:277; --accent-s:59%; --accent-l:76%;
+.theme-ctp-frappe {  /* base #303446 · accent lavender #babbf1 */
+  --color-base-00:#232634; --color-base-05:#282b3a; --color-base-10:#292c3c;
+  --color-base-20:#303446; --color-base-25:#414559; --color-base-30:#51576d;
+  --color-base-35:#626880; --color-base-40:#737994; --color-base-50:#838ba7;
+  --color-base-60:#949cbb; --color-base-70:#a5adce; --color-base-100:#c6d0f5;
+  --accent-h:239; --accent-s:66%; --accent-l:84%;
   --mono-rgb-0:0,0,0; --mono-rgb-100:255,255,255;
   --highlight-mix-blend-mode:lighten; color-scheme:dark;
 }
-.theme-ctp-latte {
-  --color-base-00:#eff1f5; --color-base-05:#e6e9ef; --color-base-10:#dce0e8;
-  --color-base-20:#ccd0da; --color-base-25:#bcc0cc; --color-base-30:#acb0be;
-  --color-base-35:#9ca0b0; --color-base-40:#8c8fa1; --color-base-50:#7c7f93;
-  --color-base-60:#6c6f85; --color-base-70:#5c5f77; --color-base-100:#4c4f69;
-  --accent-h:266; --accent-s:85%; --accent-l:58%;
+.theme-ctp-latte {  /* base #eff1f5 · accent lavender #7287fd */
+  --color-base-00:#dce0e8; --color-base-05:#e3e6ec; --color-base-10:#e6e9ef;
+  --color-base-20:#eff1f5; --color-base-25:#ccd0da; --color-base-30:#bcc0cc;
+  --color-base-35:#acb0be; --color-base-40:#9ca0b0; --color-base-50:#8c8fa1;
+  --color-base-60:#7c7f93; --color-base-70:#6c6f85; --color-base-100:#4c4f69;
+  --accent-h:231; --accent-s:97%; --accent-l:72%;
   --mono-rgb-0:255,255,255; --mono-rgb-100:0,0,0;
   --highlight-mix-blend-mode:darken; color-scheme:light;
 }
 
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; margin: 0; }
-/* The palette vars (--text-normal, --background-primary, …) are defined on these
-   theme classes, but `body` (their parent) can't see them, so anything relying on
-   inherited color/background fell back to an unthemed default — e.g. setting-row
-   labels rendered dark-on-dark. Establish the themed base here, in the scope where
-   the vars actually resolve, so every descendant inherits correctly. */
+/* Palette vars live on these theme classes, but body (their parent) can't see
+   them, so inherited color/background fell back to an unthemed default (dark-on-dark
+   labels). Establish the themed base here, where the vars resolve. */
 .theme-light, .theme-dark {
   height: 100%;
   color: var(--text-normal);

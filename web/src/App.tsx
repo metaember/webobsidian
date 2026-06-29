@@ -17,17 +17,7 @@ import FolderPicker from './components/FolderPicker';
 import { loadPlugins } from './lib/plugins';
 import { initUrlSync } from './lib/urlsync';
 import { useIsMobile } from './lib/useIsMobile';
-
-/** Maps a persisted ui.theme value to its wrapper CSS class (see styles/obsidian.css). */
-const THEME_CLASS: Record<string, string> = {
-  'obsidian-dark': 'theme-dark',
-  'obsidian-light': 'theme-light',
-  'catppuccin-mocha': 'theme-ctp-mocha',
-  'catppuccin-macchiato': 'theme-ctp-macchiato',
-  'catppuccin-frappe': 'theme-ctp-frappe',
-  'catppuccin-latte': 'theme-ctp-latte',
-};
-const themeClass = (t?: string): string => THEME_CLASS[t ?? ''] ?? 'theme-light';
+import { themeClass } from './lib/theme';
 
 export default function App() {
   const authed = useStore((s) => s.authed);
@@ -45,7 +35,8 @@ export default function App() {
   const save = useStore((s) => s.save);
   const toast = useStore((s) => s.toast);
   const [checking, setChecking] = useState(true);
-  const [theme, setTheme] = useState<string>('theme-light');
+  const theme = useStore((s) => s.theme);
+  const setTheme = useStore((s) => s.setTheme);
 
   useEffect(() => {
     api
@@ -185,7 +176,7 @@ export default function App() {
   return (
     <div className={theme}>
       <div className={appCls}>
-        <Ribbon onTheme={() => setTheme((t) => (t === 'theme-dark' ? 'theme-light' : 'theme-dark'))} />
+        <Ribbon onTheme={() => setTheme(theme === 'theme-dark' ? 'theme-light' : 'theme-dark')} />
         {showLeft && <Sidebar />}
         <Workspace />
         {showRight && <RightSidebar />}
